@@ -21,4 +21,17 @@ public class SecurityConfig {
                 .apply(new CustomSecurityConfigurer().setFlag(false)).and()
                 .build();
     }
+
+    @Bean
+    public SecurityFilterChain filterChain2(HttpSecurity httpSecurity) throws Exception {
+        CustomSecurityConfigurer customSecurityConfigurer = new CustomSecurityConfigurer();
+        customSecurityConfigurer.setFlag(true);
+        return httpSecurity
+                .authorizeHttpRequests(request ->
+                        request.anyRequest().permitAll())
+                .httpBasic().and()
+                .apply(new CustomSecurityConfigurer().setFlag(false)).and()
+                .build();
+    }
+
 }
