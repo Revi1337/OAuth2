@@ -16,11 +16,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request
                         .anyRequest().authenticated())
                 .formLogin().and()
-                .httpBasic().and()
-                .exceptionHandling(handler -> handler
-                        .authenticationEntryPoint((req, res, except) -> {
-                            System.out.println("Called Custom EntryPoint");
-                        }))
                 .build();
     }
 
