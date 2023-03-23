@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity
@@ -15,7 +16,9 @@ public class SecurityConfig {
         return httpSecurity
                 .authorizeHttpRequests(request -> request
                         .anyRequest().authenticated())
-                .formLogin().and()
+                .httpBasic(config -> config
+                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint()))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
     }
 
