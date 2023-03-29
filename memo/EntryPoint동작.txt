@@ -1,0 +1,33 @@
+AuthenticationEntryPoint 는 기본적으로 인증실패나 인증받지못한 사용자가 접근했을떄 동작함. 따라서 처음에 로그인페이지로 이동했을때도 작동함.
+AuthenticationEntryPoint 는 인증 실패시, 이에 따른 후속처리를 처리하는 역할을 함.
+
+// 첫번쨰 경우
+: httpBasic(), formLogin(), exceptionHandling(handler -> handler.authenticationEntryPoint(커스텀 EntryPoint)) 모두 설정 안할 시
+--> AuthenticationEntryPoint 구현체인 Http403ForbiddenEntryPoint 동작 --> 403 Access Denied 발생
+
+// 두번쨰 경우
+: httpBasic(), formLogin(), exceptionHandling(handler -> handler.authenticationEntryPoint(커스텀 EntryPoint)) 모두 설정 시
+--> lambda 식에서 구현한 AuthenticationEntryPoint 혹은 직접 Custom 한  AuthenticationEntryPoint 가 동작함.
+
+// 세번쨰 경우
+: exceptionHandling(handler -> handler.authenticationEntryPoint(커스텀 EntryPoint)) 만 설정 시
+--> lambda 식에서 구현한 AuthenticationEntryPoint 혹은 직접 Custom 한  AuthenticationEntryPoint 가 동작함.
+
+// 네번쨰 경우
+: httpBasic(), formLogin() 만 설정 시
+--> AuthenticationEntryPoint 의 구현체인 DelegatingAuthenticationEntryPoint 가 동작하게되는데, requestMatcher 에 따라 구분되어 redirect 됨.
+
+// 다섯번쨰 경우
+: httpBasic(), formLogin() 둘중 하나 설정 시
+--> AuthenticationEntryPoint 의 구현체인 DelegatingAuthenticationEntryPoint 가 동작하게되고, 인증방식에 맞는 로그인페이지로  redirect 됨
+      BasicAuthenticationEntryPoint : basic
+      LoginUrlAuthenticationEntryPoint : form
+
+
+*** 결론 ***
+1. basic, form, 커스텀 EntryPoint 모두 설정하지않으면 Http403ForbiddenEntryPoint 이 동작해서 Access Denied 발생한다.
+2. 커스텀 AuthenticationEntryPoint 을 구현하면 인증방식이 basic 이든 form 이든, 무조건 AuthenticationEntryPoint 가 우선 동작한다.
+
+
+*** 관련 ***
+AbstractAuthenticationFilterConfigurer, ExceptionHandlingConfigurer,

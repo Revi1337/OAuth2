@@ -1,0 +1,28 @@
+1. BasicAuthenticationFilter
+2. BasicAuthenticationConverter             (Authentication Basic 를 파싱해서 username 과 password 추출)
+3. UsernamePasswordAuthenticationToken      (username, password 저장)
+4. 인증필요여부 확인    ----->   { 인증필요 X ? }    ----->     Chain.doFilter
+        |
+        |
+        V
+  { 인증필요 O ? }
+        |
+        |
+        v
+5. ProviderManager
+6. DaoAuthenticationProvider                -->     인증실패?     -->   BasicAuthenticationEntryPoint   --> 401 Unauthorized
+        |
+        |
+        v
+     인증성공 ?
+        |
+        |
+        v
+7. UsernamePasswordAuthenticationToken      (Principal = User)
+8. SecurityContext
+
+
+
+// sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+--> 세션을 사용할것이냐 안할것이냐에 따라서 Basic 매번 인증처리를 할것인지. 세션에 담아서 활용할것인지 정할 수 있다.
+

@@ -1,0 +1,41 @@
+# 인증받지 못한 사용자가 / 에 접근했을때의 로직 Spring 3.0.4  기준
+
+1. DelegatingFilterProxy --> 251 (public void doFilter --> Filter delegateToUse = this.delegate)
+                         --> 331 Assert.state(targetBeanName != null, "No target bean name set")                        // springSecurityFilterChain Bean 을 찾는 과정
+                         --> 348 protected void invokeDelegate --> delegate.doFilter(request, response, filterChain);   // 다음필터로 이동
+    : DelegatingFilterProxy 가 FilterChainProxy(SecurityFilterChain)를 찾고 위임. 그리고 doFilter 로 FilterChainProxy 로 이동
+
+
+2. FilterChainProxy      --> 363 @Override public void doFilter --> if (this.currentPosition == this.size)  // SecurityFilterChain 에 존재하는 Filter 들을 확인.
+                         --> 374 nextFilter.doFilter                                                        // 필터를 순회하면서 적합한 필터를 찾는 과정
+    : /login 페이지로 접근해야 UsernamePasswordAuthenticationFilter 로 이동함.
+    : 현재는 / 로 접근했기때문에, 로그인페이지를 생성해주는 DefaultLoginPageGeneratingFilter 로 이동함.
+    : 하지만, 인증받지못한 사용자이기떄문에 doFilter 에서 ExceptionTranslationFilter 로 이동함.
+
+
+3. ExceptionTranslationFilter
+            --> 126 private void doFilter --> chain.doFilter(request, response)
+            --> 133 private void doFilter --> Throwable[] causeChain = this.throwableAnalyzer.determineCauseChain(ex)
+
+
+@Deprecated
+4. FilterSecurityInterceptor
+            --> 81 @Override void doFilter --> invoke(new FilterInvocation(request, response, chain))
+            --> 113 InterceptorStatusToken token = super.beforeInvocation(filterInvocation);
+
+@Deprecated
+5. AbstractSecurityInterceptor
+            --> 186 protected InterceptorStatusToken beforeInvocation --> Collection<ConfigAttribute> attributes = this.obtainSecurityMetadataSource()
+            --> 253 this.accessDecisionManager.decide(authenticated, object, attributes);
+            --> 255 catch (AccessDeniedException ex) { if (this.logger.isTraceEnabled()) ...
+
+
+6. ExceptionTranslationFilter
+            --> 133 Throwable[] causeChain = this.throwableAnalyzer.determineCauseChain(ex);
+            --> 178 handleAccessDeniedException(request, response, chain, (AccessDeniedException) exception);   // 인증받지 못한 사용자인데,  AccessDeniedException 발생
+            --> 192 if (isAnonymous || this.authenticationTrustResolver.isRememberMe(authentication))           // 하지만 뒤이어 익명사용자일 경우를 검증하여
+            --> 197 sendStartAuthentication(request, response, chain,)                                          // 인증예외 처리를 할수있는 로직을 탐.
+            --> 216 SecurityContext context = this.securityContextHolderStrategy.createEmptyContext();          // SecurityContext 를 초기화시키고
+            --> 219 this.authenticationEntryPoint.commence(request, response, reason);                          // 인증실패시 작동하는 AuthenticationEntryPoint(LoginUrlAuthenticationEntryPoint) 로직을 타게 됨.
+
+
