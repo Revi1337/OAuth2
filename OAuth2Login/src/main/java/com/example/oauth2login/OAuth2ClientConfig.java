@@ -10,7 +10,26 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration @EnableWebSecurity
 public class OAuth2ClientConfig {
 
-    // OAuth2LoginConfigurer 초기화 이해
+//    // OAuth2LoginConfigurer 초기화 이해
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+//        return httpSecurity
+//                .authorizeHttpRequests(request -> request.anyRequest().authenticated())
+//                .oauth2Login(Customizer.withDefaults())
+//                .build();
+//    }
+
+
+//    // OAuth2 Login Page 생성 (1) - 커스텀
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+//        return httpSecurity
+//                .authorizeHttpRequests(request -> request.requestMatchers("/loginPage").permitAll())
+//                .oauth2Login(oauth2 -> oauth2.loginPage("/loginPage"))
+//                .build();
+//    }
+
+    // OAuth2 Login Page 생성 (2) - 디폴트
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
@@ -18,5 +37,6 @@ public class OAuth2ClientConfig {
                 .oauth2Login(Customizer.withDefaults())
                 .build();
     }
+
 
 }
