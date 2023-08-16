@@ -13,7 +13,7 @@ spring:
             client-secret: S0IAlcx5hI9WPFuEpgxNzyjxi7Aar6Y9
             redirect-uri: http://localhost:8081/login/oauth2/code/keyclock
             client-authentication-method: client_secret_post
-            scope: openid,profile,email
+            scope: profile,email
 
         provider:
           keycloak:

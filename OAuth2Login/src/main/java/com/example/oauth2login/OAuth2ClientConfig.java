@@ -29,7 +29,16 @@ public class OAuth2ClientConfig {
 //                .build();
 //    }
 
-    // OAuth2 Login Page 생성 (2) - 디폴트
+//    // OAuth2 Login Page 생성 (2) - 디폴트
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+//        return httpSecurity
+//                .authorizeHttpRequests(request -> request.anyRequest().authenticated())
+//                .oauth2Login(Customizer.withDefaults())
+//                .build();
+//    }
+
+    // Authorization Code 요청
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
