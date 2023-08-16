@@ -1,0 +1,42 @@
+server:
+  port: 8081
+spring:
+  security:
+    oauth2:
+      client:
+
+        registration:
+          keycloak:
+            client-id: VDB-KR
+            client-secret: S0IAlcx5hI9WPFuEpgxNzyjxi7Aar6Y9
+            redirect-uri: http://localhost:8081/login/oauth2/code/keyclock
+
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8080/realms/oauth2
+
+#server:
+#  port: 8081
+#spring:
+#  security:
+#    oauth2:
+#      client:           # Prefix
+#
+#        registration:   # Client Config (클라이언트)
+#          keycloak:     # OAuth2ClientProperties 의 Registration(내부클래스) 필드의 Key 값으로 들어가게 됨(Map). --> Client 를  구분하기 위한 Key 값으로 사용되는 것.
+#            authorization-grant-type: authorization_code                     # 어떤 권한부여타입으로 설정할 것이냐. (Authorization code grant, Implicit, client Credentials 등등)
+#            client-name: VDB-KR                                              # Client Name
+#            client-id: VDB-KR                                                # Authorization Server 에 등록된 클라이언트 아이디.
+#            client-secret: S0IAlcx5hI9WPFuEpgxNzyjxi7Aar6Y9                  # Client Secret Key
+#            redirect-uri: http://localhost:8081/login/oauth2/code/keyclock   # 임시코드인 Code 를 콜백하는 주소. (쉽게말하면 권한코드부여 요청에 대한 응답을 받을 주소.)
+#            client-authentication-method: client_secret_post                 # Client 자격증명을 위한 전송 방식. (Access Token 을 교환할떄 clientid 와 secret 을 같이 전달하는데 그 이유는 CLient 의 자격증명을 위한 것임. 이는 Client 인증 방식을 POST 로 할 것을 의미함.). Basic, Post, none 등등이 있음.
+#            scope: openid,profile,email                                      # Resource 에 대한 접근 제한 범위
+#
+#        provider:     ## Authorization Server Config (공급자)
+#          keycloak:   # OAuth2ClientProperties 의 Provider(내부클래스) 필드의 Key 값으로 들어가게 됨(Map). --> provider 를  구분하기 위한 Key 값으로 사용되는 것.
+#            authorization-uri: http://localhost:8080/realms/oauth2/protocol/openid-connect/auth     # Authorization Grant Endpoint (권한코드부여(code) 를 요청하는 Endpoint)
+#            token-uri: http://localhost:8080/realms/oauth2/protocol/openid-connect/token            # AccessToken 을 요청할 Endpoint (Code 와 AccessToken 을 교환할 주소.)
+#            user-info-uri: http://localhost:8080/realms/oauth2/protocol/openid-connect/userinfo     # UserInfo 를 가져올 수 있는 EndPoint
+#            issuer-uri: http://localhost:8080/realms/oauth2                                         # 서비스 공급자 위치 (인가서버가 제공하는 여러가지 MetaData 를 갖고올 수 있음.)
+#            jwk-set-uri: http://localhost:8080/realms/oauth2/protocol/openid-connect/certs          # JwkSetUri EndPoint (Client 가 Resource Server 에게 데이터를 요청할때 함께 보내는 AccessToken 을 검증할때 필요한 Public Key 를 받을 수 있는 주소.)
+#            user-name-attribute: preferred_username                                                 # OAuth2 사용자명을 추출하는 Claim 명 (Authorization Server 마다 다름). (Google 은 SUB)
