@@ -39,6 +39,15 @@ public class OAuth2ClientConfig {
 //    }
 
     // Authorization Code 요청
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+//        return httpSecurity
+//                .authorizeHttpRequests(request -> request.anyRequest().authenticated())
+//                .oauth2Login(Customizer.withDefaults())
+//                .build();
+//    }
+
+    // AccessToken 교환
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
