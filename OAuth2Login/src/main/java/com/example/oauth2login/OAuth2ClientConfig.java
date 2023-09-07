@@ -56,7 +56,7 @@ public class OAuth2ClientConfig {
 //                .build();
 //    }
 
-    // OAuth2 2.0 User 모델 소개 (1), (2)
+    // OAuth2 2.0 User 모델 소개 (1), (2), UserInfo 엔드포인트 요청하기
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
