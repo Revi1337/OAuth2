@@ -48,10 +48,19 @@ public class OAuth2ClientConfig {
 //    }
 
     // AccessToken 교환
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+//        return httpSecurity
+//                .authorizeHttpRequests(request -> request.anyRequest().authenticated())
+//                .oauth2Login(Customizer.withDefaults())
+//                .build();
+//    }
+
+    // OAuth2 2.0 User 모델 소개 (1), (2)
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                .authorizeHttpRequests(request -> request.anyRequest().authenticated())
+                .authorizeHttpRequests(request -> request.anyRequest().permitAll())
                 .oauth2Login(Customizer.withDefaults())
                 .build();
     }
