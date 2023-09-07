@@ -73,6 +73,7 @@ public class OAuth2ClientConfig {
 //                .build();
 //    }
 
+    // Spring MVC 에서 인증 객체 참조
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
